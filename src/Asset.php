@@ -91,11 +91,11 @@ class Asset extends SplFileInfo {
 
         switch ($this->type()) {
             case 'js':
-                $tag = HtmlFacade::script($url);
+                $tag = "<script src=\"$url\"></script>";
                 break;
 
             case 'css':
-                $tag = HtmlFacade::style($url);
+                $tag = "<link href=\"$url\" rel=\"stylesheet\" />";
                 break;
 
             case 'favicon':

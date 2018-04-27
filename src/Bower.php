@@ -11,10 +11,16 @@ class Bower {
 
     protected static $__config = [];
     public static $components_info;
-    protected $components;
+    protected $components, $base_path, $base_url;
 
-    public function __construct($components = []) {
+    public function __construct($components = [], $base_path = null, $base_url = null) {
         $this->components = $components;
+        if ($base_path) {
+            $this->base_path = $base_path;
+        }
+        if ($base_url) {
+            $this->base_url = $base_url;
+        }
     }
 
     static function make($config) {
@@ -28,8 +34,12 @@ class Bower {
         return $components;
     }
 
-    static function getComponent($name) {
-        return Component::make($name);
+    function getComponent($name) {
+        return Component::make([
+                    "name" => $name,
+                    "base_path" => $this->base_path,
+                    "base_url" => $this->base_url
+        ]);
     }
 
     function tags($names = []) {

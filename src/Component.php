@@ -10,20 +10,20 @@ namespace Shridhar\Bower;
 class Component {
 
     protected $config, $__name;
-    static $base_path, $base_url;
+    protected $base_path, $base_url;
 
     protected function getConfig($key) {
         return array_get($this->config, $key);
     }
 
-    public function __construct($name) {
+    public function __construct($name, $base_path = null, $base_url = null) {
         $this->__name = $name;
+        $this->base_path = $base_path ?: public_path("assets/bower_components");
+        $this->base_url = $base_url ?: url("assets/bower_components");
     }
 
-    public static function make($name) {
-        return app()->makeWith(__CLASS__, [
-                    "name" => $name
-        ]);
+    public static function make($config) {
+        return app()->makeWith(__CLASS__, $config);
     }
 
     public function name() {
@@ -41,12 +41,12 @@ class Component {
 
     public function path($path) {
         $name = $this->name();
-        return static::$base_path . "/$name/$path";
+        return $this->base_path . "/$name/$path";
     }
 
     public function url($path) {
         $name = $this->name();
-        return static::$base_url . "/$name/$path";
+        return $this->base_url . "/$name/$path";
     }
 
     public function info() {
@@ -90,8 +90,10 @@ class Component {
             $deps_array = $info->get("dependencies");
             $deps = array_keys((array) $deps_array);
             foreach ($deps as &$dep) {
-                $dep = app()->makeWith(__CLASS__, [
-                    "name" => $dep
+                $dep = static::make([
+                            "name" => $dep,
+                            "base_path" => $this->base_path,
+                            "base_url" => $this->base_url,
                 ]);
             }
         } else {
@@ -102,5 +104,5 @@ class Component {
 
 }
 
-Component::$base_path = public_path("assets/bower_components");
-Component::$base_url = url("assets/bower_components");
+//Component::$base_path = public_path("assets/bower_components");
+//Component::$base_url = url("assets/bower_components");
