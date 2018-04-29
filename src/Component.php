@@ -2,6 +2,8 @@
 
 namespace Shridhar\Bower;
 
+use Illuminate\Support\Facades\File;
+
 /**
  * Description of Component
  *
@@ -41,6 +43,10 @@ class Component {
 
     function installed() {
         return file_exists("$this->base_path/$this->__name/.bower.json");
+    }
+
+    function copy($destinaation) {
+        File::copyDirectory("$this->base_path/$this->__name", $destinaation);
     }
 
     function uninstall() {
