@@ -18,8 +18,8 @@ class Component {
 
     public function __construct($name, $base_path = null, $base_url = null) {
         $this->__name = $name;
-        $this->base_path = $base_path ?: public_path("assets/bower_components");
-        $this->base_url = $base_url ?: url("assets/bower_components");
+        $this->base_path = $base_path;
+        $this->base_url = $base_url;
     }
 
     public static function make($config) {
@@ -28,6 +28,28 @@ class Component {
 
     public function name() {
         return $this->__name;
+    }
+
+    function install() {
+        $dir = dirname($this->base_path);
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+        chdir($dir);
+        Bower::run_command("install $this->__name");
+    }
+
+    function installed() {
+        return file_exists("$this->base_path/$this->__name/.bower.json");
+    }
+
+    function uninstall() {
+        $dir = dirname($this->base_path);
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+        chdir($dir);
+        Bower::run_command("uninstall $this->__name");
     }
 
     public function asset($path, $meta = []) {
@@ -103,6 +125,3 @@ class Component {
     }
 
 }
-
-//Component::$base_path = public_path("assets/bower_components");
-//Component::$base_url = url("assets/bower_components");
