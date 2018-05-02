@@ -80,7 +80,7 @@ class Bower {
 
 }
 
-Bower::$components_info = [
+Bower::$components_info = array_merge([
     "bootstrap" => [
         "main" => [
             "dist/css/bootstrap.min.css",
@@ -97,4 +97,4 @@ Bower::$components_info = [
             "dist/lodash.min.js"
         ]
     ]
-];
+        ], array_wrap(config("bower.components_info")));
