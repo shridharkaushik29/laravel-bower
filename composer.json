@@ -17,5 +17,12 @@
             "Shridhar\\Bower\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Shridhar\\Bower\\Provider"
+            ]
+        }
+    }
 }
