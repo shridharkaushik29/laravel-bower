@@ -82,10 +82,9 @@ class Component {
         $default_info = array_get(Bower::$components_info, $this->name());
         if (file_exists($path)) {
             $contents = file_get_contents($path);
+            $array = json_decode($contents);
             if ($default_info) {
-                $array = collect($default_info)->merge(json_decode($contents));
-            } else {
-                $array = json_decode($contents);
+                $array = array_replace((array) $array, $default_info);
             }
             return collect($array);
         } else {

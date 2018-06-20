@@ -13,9 +13,12 @@ class Bower {
     public static $components_info;
     protected $components, $base_path, $base_url;
 
-    public function __construct($components = [], $base_path = null, $base_url = null) {
+    public function __construct($components = [], $base_path = null, $base_url = null, $components_info = null) {
+        if ($components_info) {
+            static::$components_info = $components_info;
+        }
         $this->components = $components;
-        $this->base_path = $base_path ?: config("bower.path") ?: public_path("bower_components");
+        $this->base_path = $base_path ?: config("bower.path") ?: base_path("bower_components");
         $this->base_url = $base_url ?: config("bower.url") ?: url("bower_components");
     }
 
@@ -79,22 +82,3 @@ class Bower {
     }
 
 }
-
-Bower::$components_info = array_merge([
-    "bootstrap" => [
-        "main" => [
-            "dist/css/bootstrap.min.css",
-            "dist/js/bootstrap.min.js"
-        ]
-    ],
-    "font-awesome" => [
-        "main" => [
-            "web-fonts-with-css/css/fontawesome-all.min.css"
-        ]
-    ],
-    "lodash" => [
-        "main" => [
-            "dist/lodash.min.js"
-        ]
-    ]
-        ], array_wrap(config("bower.components_info")));
